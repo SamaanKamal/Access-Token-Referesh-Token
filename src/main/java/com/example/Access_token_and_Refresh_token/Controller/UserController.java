@@ -6,7 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -26,14 +28,15 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<User>> getUser(){
-        List<User> user = userService.getUsers();
-        return ResponseEntity.ok(user);
+        List<User> users = userService.getUsers();
+        return ResponseEntity.ok(users);
     }
 
     @PostMapping("/create-user")
     public ResponseEntity<User> createUser(@RequestBody User user){
-        userService.saveUser(user);
-        return ResponseEntity.status(HttpStatus.OK).body(user);
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/create-user").toUriString());
+        User savedUser = userService.saveUser(user);
+        return ResponseEntity.created(uri).body(savedUser);
     }
 
     @PutMapping("/add-role-to-user/{username}/{role-name}")
