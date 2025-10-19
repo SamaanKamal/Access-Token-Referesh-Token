@@ -15,7 +15,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 @Slf4j
 @Component
-public class CustomUserDetails implements UserDetailsService {
+public class UserDetails implements UserDetailsService {
     private final UserRepository userRepository;
     @Override
     public org.springframework.security.core.userdetails.UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
