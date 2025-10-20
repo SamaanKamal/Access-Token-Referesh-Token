@@ -4,17 +4,21 @@ import com.example.Access_token_and_Refresh_token.Entity.Role;
 import com.example.Access_token_and_Refresh_token.Entity.User;
 import com.example.Access_token_and_Refresh_token.Service.Role.RoleService;
 import com.example.Access_token_and_Refresh_token.Service.User.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 
 @SpringBootApplication
 @PropertySource("classpath:env.properties")
+@RequiredArgsConstructor
 public class AccessTokenAndRefreshTokenApplication {
+    private final PasswordEncoder passwordEncoder;
 
     public static void main(String[] args) {
         SpringApplication.run(AccessTokenAndRefreshTokenApplication.class, args);
@@ -28,10 +32,10 @@ public class AccessTokenAndRefreshTokenApplication {
             roleService.saveRole(new Role(null, "MANAGER"));
             roleService.saveRole(new Role(null, "SUPER_ADMIN"));
 
-            userService.saveUser(new User(null, "John Travolta", "john", "1234", new ArrayList<>()));
-            userService.saveUser(new User(null, "Will Smith", "will", "1234", new ArrayList<>()));
-            userService.saveUser(new User(null, "Jim Carry", "jim", "1234", new ArrayList<>()));
-            userService.saveUser(new User(null, "Arnold Schwarzenegger", "Arnold", "1234", new ArrayList<>()));
+            userService.saveUser(new User(null, "John Travolta", "john", passwordEncoder.encode("1234"), new ArrayList<>()));
+            userService.saveUser(new User(null, "Will Smith", "will", passwordEncoder.encode("1234"), new ArrayList<>()));
+            userService.saveUser(new User(null, "Jim Carry", "jim", passwordEncoder.encode("1234"), new ArrayList<>()));
+            userService.saveUser(new User(null, "Arnold Schwarzenegger", "Arnold", passwordEncoder.encode("1234"), new ArrayList<>()));
 
             userService.addRoleToUser("john", "USER");
             userService.addRoleToUser("john", "MANAGER");
